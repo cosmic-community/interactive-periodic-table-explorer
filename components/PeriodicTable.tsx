@@ -29,6 +29,7 @@ export default function PeriodicTable({
                 gridColumn: group,
                 gridRow: period
               }}
+              className="w-full h-full"
             >
               <ElementCard 
                 element={element}
@@ -42,14 +43,14 @@ export default function PeriodicTable({
           let placeholder = null;
           if (period === 6 && group === 3) {
             placeholder = (
-              <div className="aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
-                57-71
+              <div className="w-full aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
+                <span className="leading-tight">57-71</span>
               </div>
             );
           } else if (period === 7 && group === 3) {
             placeholder = (
-              <div className="aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
-                89-103
+              <div className="w-full aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
+                <span className="leading-tight">89-103</span>
               </div>
             );
           }
@@ -61,7 +62,7 @@ export default function PeriodicTable({
                 gridColumn: group,
                 gridRow: period
               }}
-              className="aspect-square"
+              className="w-full aspect-square"
             >
               {placeholder}
             </div>
@@ -87,6 +88,7 @@ export default function PeriodicTable({
               gridColumn: index + 1,
               gridRow: 1
             }}
+            className="w-full h-full"
           >
             <ElementCard 
               element={element}
@@ -107,6 +109,7 @@ export default function PeriodicTable({
               gridColumn: index + 1,
               gridRow: 2
             }}
+            className="w-full h-full"
           >
             <ElementCard 
               element={element}
@@ -133,10 +136,12 @@ export default function PeriodicTable({
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8 no-scroll">
       {/* Main periodic table */}
-      <div className="periodic-table-grid">
-        {renderMainTable()}
+      <div className="periodic-table-container">
+        <div className="periodic-table-grid">
+          {renderMainTable()}
+        </div>
       </div>
       
       {/* Lanthanides and Actinides */}
@@ -146,8 +151,10 @@ export default function PeriodicTable({
             Lanthanides & Actinides
           </h3>
         </div>
-        <div className="lanthanide-actinide-grid">
-          {renderLanthanideActinide()}
+        <div className="periodic-table-container">
+          <div className="lanthanide-actinide-grid">
+            {renderLanthanideActinide()}
+          </div>
         </div>
       </div>
     </div>

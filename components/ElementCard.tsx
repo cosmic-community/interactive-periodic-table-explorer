@@ -1,51 +1,44 @@
-import { ElementCardProps, CATEGORY_COLORS, DEFAULT_ELEMENT_COLOR } from '@/types'
+import { Element } from '@/types'
+import { getCategoryColor } from '@/lib/periodicTableLayout'
 
-export default function ElementCard({ element, onClick, className = '' }: ElementCardProps) {
-  // Handle category being either a string or Cosmic select-dropdown object
-  const categoryValue = typeof element.metadata.category === 'string' 
-    ? element.metadata.category 
-    : element.metadata.category?.value || 'Unknown'
-  
-  const categoryColor = CATEGORY_COLORS[categoryValue] || DEFAULT_ELEMENT_COLOR
-  
-  const handleClick = () => {
-    onClick?.(element)
-  }
+interface ElementCardProps {
+  element: Element
+  onClick: (element: Element) => void
+}
+
+export default function ElementCard({ element, onClick }: ElementCardProps) {
+  const category = typeof element.metadata.category === 'object' 
+    ? element.metadata.category.value 
+    : element.metadata.category
+
+  const categoryColor = getCategoryColor(category)
 
   return (
-    <div 
-      className={`element-card aspect-square p-1 md:p-2 text-center cursor-pointer border-2 rounded-lg transition-all duration-200 hover:scale-105 hover:z-10 relative ${className}`}
-      style={{
-        backgroundColor: `${categoryColor}20`,
-        borderColor: `${categoryColor}60`,
-      }}
-      onClick={handleClick}
+    <button
+      onClick={() => onClick(element)}
+      className={`element-card w-full h-full ${categoryColor} border border-white/20 rounded-lg 
+                 flex flex-col items-center justify-center text-white text-shadow
+                 hover:border-white/40 hover:shadow-lg transition-all duration-200
+                 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent
+                 p-1`}
+      title={`${element.metadata.element_name} (${element.metadata.symbol}) - Atomic Number: ${element.metadata.atomic_number}`}
     >
-      <div className="h-full flex flex-col justify-between text-xs md:text-sm">
-        {/* Atomic number */}
-        <div className="text-xs text-white/80 font-medium leading-none">
+      <div className="w-full h-full flex flex-col items-center justify-center min-h-0">
+        {/* Atomic Number */}
+        <div className="text-xs opacity-90 leading-none mb-1">
           {element.metadata.atomic_number}
         </div>
         
-        {/* Element symbol */}
-        <div 
-          className="text-lg md:text-xl font-bold text-white flex-1 flex items-center justify-center"
-          style={{ color: categoryColor }}
-        >
+        {/* Element Symbol */}
+        <div className="font-bold text-lg leading-none mb-1 truncate w-full text-center">
           {element.metadata.symbol}
         </div>
         
-        {/* Element name */}
-        <div className="text-xs text-white/90 font-medium truncate leading-none">
-          {element.title}
+        {/* Element Name - Truncated for smaller screens */}
+        <div className="text-xs opacity-80 leading-tight text-center truncate w-full px-1">
+          {element.metadata.element_name}
         </div>
       </div>
-      
-      {/* Hover overlay */}
-      <div 
-        className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-200 rounded-lg"
-        style={{ backgroundColor: categoryColor }}
-      />
-    </div>
+    </button>
   )
 }
