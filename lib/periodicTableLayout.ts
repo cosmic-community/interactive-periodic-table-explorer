@@ -1,31 +1,31 @@
 import { Element } from '@/types'
 
-// Category color mapping with translucent Tailwind classes
+// Category color mapping with more visible translucent Tailwind classes
 const categoryColorMap: Record<string, string> = {
   // Metals
-  'alkali_metal': 'bg-red-500/30 border-red-400/40 hover:bg-red-500/40',
-  'alkaline_earth_metal': 'bg-orange-500/30 border-orange-400/40 hover:bg-orange-500/40',
-  'transition_metal': 'bg-blue-500/30 border-blue-400/40 hover:bg-blue-500/40',
-  'transition_metal_predicted': 'bg-blue-400/30 border-blue-300/40 hover:bg-blue-400/40',
-  'post_transition_metal': 'bg-indigo-500/30 border-indigo-400/40 hover:bg-indigo-500/40',
-  'post_transition_metal_predicted': 'bg-indigo-400/30 border-indigo-300/40 hover:bg-indigo-400/40',
-  'lanthanide': 'bg-purple-500/30 border-purple-400/40 hover:bg-purple-500/40',
-  'actinide': 'bg-pink-500/30 border-pink-400/40 hover:bg-pink-500/40',
+  'alkali_metal': 'bg-red-500/70 border-red-400/80 hover:bg-red-500/80',
+  'alkaline_earth_metal': 'bg-orange-500/70 border-orange-400/80 hover:bg-orange-500/80',
+  'transition_metal': 'bg-blue-500/70 border-blue-400/80 hover:bg-blue-500/80',
+  'transition_metal_predicted': 'bg-blue-400/70 border-blue-300/80 hover:bg-blue-400/80',
+  'post_transition_metal': 'bg-indigo-500/70 border-indigo-400/80 hover:bg-indigo-500/80',
+  'post_transition_metal_predicted': 'bg-indigo-400/70 border-indigo-300/80 hover:bg-indigo-400/80',
+  'lanthanide': 'bg-purple-500/70 border-purple-400/80 hover:bg-purple-500/80',
+  'actinide': 'bg-pink-500/70 border-pink-400/80 hover:bg-pink-500/80',
   
   // Non-metals
-  'reactive_nonmetal': 'bg-green-500/30 border-green-400/40 hover:bg-green-500/40',
-  'noble_gas': 'bg-cyan-500/30 border-cyan-400/40 hover:bg-cyan-500/40',
-  'noble_gas_predicted': 'bg-cyan-400/30 border-cyan-300/40 hover:bg-cyan-400/40',
-  'halogen': 'bg-yellow-500/30 border-yellow-400/40 hover:bg-yellow-500/40',
-  'halogen_predicted': 'bg-yellow-400/30 border-yellow-300/40 hover:bg-yellow-400/40',
+  'reactive_nonmetal': 'bg-green-500/70 border-green-400/80 hover:bg-green-500/80',
+  'noble_gas': 'bg-cyan-500/70 border-cyan-400/80 hover:bg-cyan-500/80',
+  'noble_gas_predicted': 'bg-cyan-400/70 border-cyan-300/80 hover:bg-cyan-400/80',
+  'halogen': 'bg-yellow-500/70 border-yellow-400/80 hover:bg-yellow-500/80',
+  'halogen_predicted': 'bg-yellow-400/70 border-yellow-300/80 hover:bg-yellow-400/80',
   
   // Metalloids and others
-  'metalloid': 'bg-teal-500/30 border-teal-400/40 hover:bg-teal-500/40',
-  'unknown_synthetic': 'bg-gray-500/30 border-gray-400/40 hover:bg-gray-500/40',
+  'metalloid': 'bg-teal-500/70 border-teal-400/80 hover:bg-teal-500/80',
+  'unknown_synthetic': 'bg-gray-500/70 border-gray-400/80 hover:bg-gray-500/80',
 }
 
 // Default color for unknown categories
-const defaultColor = 'bg-slate-500/30 border-slate-400/40 hover:bg-slate-500/40'
+const defaultColor = 'bg-slate-500/70 border-slate-400/80 hover:bg-slate-500/80'
 
 export function getCategoryColor(category: string): string {
   // Handle category object format

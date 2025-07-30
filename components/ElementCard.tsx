@@ -19,7 +19,7 @@ export default function ElementCard({ element, onClick }: ElementCardProps) {
       className={`element-card w-full h-full ${categoryColorClasses}
                  rounded-lg flex flex-col items-center justify-center text-white text-shadow
                  transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 
-                 focus:ring-offset-2 focus:ring-offset-transparent p-1`}
+                 focus:ring-offset-2 focus:ring-offset-transparent p-1 border-2`}
       title={`${element.metadata.element_name} (${element.metadata.symbol}) - Atomic Number: ${element.metadata.atomic_number}`}
     >
       <div className="w-full h-full flex flex-col items-center justify-center min-h-0">
