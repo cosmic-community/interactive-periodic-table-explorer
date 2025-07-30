@@ -107,6 +107,29 @@ export const PERIODIC_TABLE_POSITIONS: Record<number, { period: number; group: n
   118: { period: 7, group: 18 }, // Oganesson
 };
 
+// Category color mapping for elements
+export function getCategoryColor(category: string): string {
+  const colorMap: Record<string, string> = {
+    'Reactive nonmetal': 'bg-green-600',
+    'Noble gas': 'bg-purple-600',
+    'Alkali metal': 'bg-red-600',
+    'Alkaline earth metal': 'bg-orange-600',
+    'Metalloid': 'bg-teal-600',
+    'Halogen': 'bg-yellow-600',
+    'Post-transition metal': 'bg-blue-600',
+    'Transition metal': 'bg-indigo-600',
+    'Lanthanide': 'bg-pink-600',
+    'Actinide': 'bg-rose-600',
+    'Transition metal (predicted)': 'bg-indigo-500',
+    'Post-transition metal (predicted)': 'bg-blue-500',
+    'Unknown / Synthetic': 'bg-gray-600',
+    'Halogen (predicted)': 'bg-yellow-500',
+    'Noble gas (predicted)': 'bg-purple-500',
+  };
+  
+  return colorMap[category] || 'bg-gray-500';
+}
+
 // Get element position based on atomic number
 export function getElementPosition(atomicNumber: number): { period: number; group: number } | null {
   return PERIODIC_TABLE_POSITIONS[atomicNumber] || null;

@@ -10,6 +10,13 @@ export default function PeriodicTable({
 }: PeriodicTableProps) {
   const { mainTableElements, lanthanides, actinides } = createElementLayout(elements);
 
+  // Safe handler that checks if onElementClick is defined
+  const handleElementClick = (element: Element) => {
+    if (onElementClick) {
+      onElementClick(element);
+    }
+  };
+
   // Render main periodic table (7 periods x 18 groups)
   const renderMainTable = (): JSX.Element[] => {
     const cells: JSX.Element[] = []
@@ -33,7 +40,7 @@ export default function PeriodicTable({
             >
               <ElementCard 
                 element={element}
-                onClick={onElementClick}
+                onClick={handleElementClick}
               />
             </div>
           )
@@ -92,7 +99,7 @@ export default function PeriodicTable({
           >
             <ElementCard 
               element={element}
-              onClick={onElementClick}
+              onClick={handleElementClick}
             />
           </div>
         )
@@ -113,7 +120,7 @@ export default function PeriodicTable({
           >
             <ElementCard 
               element={element}
-              onClick={onElementClick}
+              onClick={handleElementClick}
             />
           </div>
         )
