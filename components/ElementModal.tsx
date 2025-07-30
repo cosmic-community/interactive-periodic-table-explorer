@@ -1,6 +1,6 @@
 'use client'
 
-import { ElementModalProps } from '@/types'
+import { ElementModalProps, CATEGORY_COLORS, DEFAULT_ELEMENT_COLOR } from '@/types'
 import { useEffect } from 'react'
 
 export default function ElementModal({ element, isOpen, onClose }: ElementModalProps) {
@@ -26,6 +26,12 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
     if (e.target === e.currentTarget) onClose()
   }
 
+  const categoryValue = typeof element.metadata.category === 'string' 
+    ? element.metadata.category 
+    : element.metadata.category?.value || 'Unknown'
+    
+  const categoryColor = CATEGORY_COLORS[categoryValue] || DEFAULT_ELEMENT_COLOR
+
   return (
     <div 
       className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
@@ -37,7 +43,7 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
             <div className="flex items-center gap-4">
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center text-white text-2xl font-bold"
-                style={{ backgroundColor: element.metadata.color_code || '#667eea' }}
+                style={{ backgroundColor: categoryColor }}
               >
                 {element.metadata.symbol}
               </div>
@@ -68,6 +74,10 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
                     <span className="text-gray-600">Atomic Number:</span>
                     <span className="font-medium">{element.metadata.atomic_number}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Element Name:</span>
+                    <span className="font-medium">{element.metadata.element_name}</span>
+                  </div>
                   {element.metadata.atomic_weight && (
                     <div className="flex justify-between">
                       <span className="text-gray-600">Atomic Weight:</span>
@@ -92,10 +102,11 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
               {element.metadata.category && (
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Category</h3>
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                    {typeof element.metadata.category === 'object' 
-                      ? element.metadata.category.value 
-                      : element.metadata.category}
+                  <span 
+                    className="inline-block px-3 py-1 text-white rounded-full text-sm font-medium"
+                    style={{ backgroundColor: categoryColor }}
+                  >
+                    {categoryValue}
                   </span>
                 </div>
               )}
@@ -132,6 +143,32 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
                   </p>
                 </div>
               )}
+
+              {(element.metadata.melting_point || element.metadata.boiling_point || element.metadata.density) && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Physical Properties</h3>
+                  <div className="space-y-1 text-sm">
+                    {element.metadata.melting_point && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Melting Point:</span>
+                        <span className="font-medium">{element.metadata.melting_point}°C</span>
+                      </div>
+                    )}
+                    {element.metadata.boiling_point && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Boiling Point:</span>
+                        <span className="font-medium">{element.metadata.boiling_point}°C</span>
+                      </div>
+                    )}
+                    {element.metadata.density && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Density:</span>
+                        <span className="font-medium">{element.metadata.density} g/cm³</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -139,6 +176,20 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
             <div className="mt-6">
               <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
               <p className="text-gray-700 leading-relaxed">{element.metadata.description}</p>
+            </div>
+          )}
+
+          {element.metadata.uses && (
+            <div className="mt-4">
+              <h3 className="font-semibold text-gray-900 mb-2">Uses</h3>
+              <p className="text-gray-700 leading-relaxed">{element.metadata.uses}</p>
+            </div>
+          )}
+
+          {element.metadata.properties && (
+            <div className="mt-4">
+              <h3 className="font-semibold text-gray-900 mb-2">Properties</h3>
+              <p className="text-gray-700 leading-relaxed">{element.metadata.properties}</p>
             </div>
           )}
         </div>

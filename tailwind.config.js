@@ -1,72 +1,57 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        border: 'hsl(var(--border))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-        // Element category colors
-        'alkali-metal': '#ff6b6b',
-        'alkaline-earth': '#4ecdc4',
+        // Custom colors for element categories
+        'alkali-metal': '#ff9ff3',
+        'alkaline-earth-metal': '#4ecdc4',
         'transition-metal': '#45b7d1',
-        'post-transition': '#96ceb4',
+        'post-transition-metal': '#96ceb4',
         'metalloid': '#feca57',
-        'nonmetal': '#ff9ff3',
-        'halogen': '#54a0ff',
+        'reactive-nonmetal': '#ff6b6b',
         'noble-gas': '#5f27cd',
+        'halogen': '#54a0ff',
         'lanthanide': '#00d2d3',
         'actinide': '#ff9f43',
+        'unknown-synthetic': '#6c5ce7',
       },
-      fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'scale-in': 'scaleIn 0.2s ease-out',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'bounce-slow': 'bounce 2s infinite',
       },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        scaleIn: {
-          '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
       },
-      backdropBlur: {
-        xs: '2px',
+      gridTemplateColumns: {
+        '18': 'repeat(18, minmax(0, 1fr))',
+        '15': 'repeat(15, minmax(0, 1fr))',
       },
+      gridTemplateRows: {
+        '7': 'repeat(7, minmax(0, 1fr))',
+        '2': 'repeat(2, minmax(0, 1fr))',
+      },
+      aspectRatio: {
+        'square': '1 / 1',
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+      }
     },
   },
   plugins: [],

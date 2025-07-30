@@ -14,10 +14,11 @@ interface CosmicObject {
 export interface Element extends CosmicObject {
   type: 'elements';
   metadata: {
+    element_name: string;
     symbol: string;
     atomic_number: number;
-    atomic_weight?: string;
     category: ElementCategory | { key: string; value: string };
+    atomic_weight?: string;
     electron_configuration?: string;
     melting_point?: number;
     boiling_point?: number;
@@ -43,18 +44,23 @@ export interface Category extends CosmicObject {
   };
 }
 
-// Element category types
+// Element category types based on the Cosmic data
 export type ElementCategory = 
+  | 'reactive_nonmetal'
+  | 'noble_gas'
   | 'alkali_metal'
   | 'alkaline_earth_metal'
-  | 'transition_metal'
-  | 'post_transition_metal'
   | 'metalloid'
-  | 'nonmetal'
   | 'halogen'
-  | 'noble_gas'
+  | 'post_transition_metal'
+  | 'transition_metal'
   | 'lanthanide'
-  | 'actinide';
+  | 'actinide'
+  | 'transition_metal_predicted'
+  | 'post_transition_metal_predicted'
+  | 'unknown_synthetic'
+  | 'halogen_predicted'
+  | 'noble_gas_predicted';
 
 // Element state types
 export type ElementState = 
@@ -122,30 +128,24 @@ export interface ElementPosition {
   element: Element;
 }
 
-// Category color mapping
-export const CATEGORY_COLORS: Record<ElementCategory, string> = {
-  'alkali_metal': '#ff6b6b',
-  'alkaline_earth_metal': '#4ecdc4',
-  'transition_metal': '#45b7d1',
-  'post_transition_metal': '#96ceb4',
-  'metalloid': '#feca57',
-  'nonmetal': '#ff9ff3',
-  'halogen': '#54a0ff',
-  'noble_gas': '#5f27cd',
-  'lanthanide': '#00d2d3',
-  'actinide': '#ff9f43',
+// Category color mapping based on actual Cosmic categories
+export const CATEGORY_COLORS: Record<string, string> = {
+  'Reactive nonmetal': '#ff6b6b',
+  'Noble gas': '#5f27cd',
+  'Alkali metal': '#ff9ff3',
+  'Alkaline earth metal': '#4ecdc4',
+  'Metalloid': '#feca57',
+  'Halogen': '#54a0ff',
+  'Post-transition metal': '#96ceb4',
+  'Transition metal': '#45b7d1',
+  'Lanthanide': '#00d2d3',
+  'Actinide': '#ff9f43',
+  'Transition metal (predicted)': '#74b9ff',
+  'Post-transition metal (predicted)': '#a29bfe',
+  'Unknown / Synthetic': '#6c5ce7',
+  'Halogen (predicted)': '#0984e3',
+  'Noble gas (predicted)': '#8e44ad',
 };
 
-// Category display names
-export const CATEGORY_NAMES: Record<ElementCategory, string> = {
-  'alkali_metal': 'Alkali Metals',
-  'alkaline_earth_metal': 'Alkaline Earth Metals',
-  'transition_metal': 'Transition Metals',
-  'post_transition_metal': 'Post-transition Metals',
-  'metalloid': 'Metalloids',
-  'nonmetal': 'Nonmetals',
-  'halogen': 'Halogens',
-  'noble_gas': 'Noble Gases',
-  'lanthanide': 'Lanthanides',
-  'actinide': 'Actinides',
-};
+// Default color for unknown categories
+export const DEFAULT_ELEMENT_COLOR = '#6b7280';

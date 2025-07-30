@@ -1,4 +1,5 @@
-import { PeriodicTableProps, Element, ElementPosition } from '@/types'
+import { PeriodicTableProps, Element } from '@/types'
+import { createElementLayout } from '@/lib/periodicTableLayout'
 import ElementCard from '@/components/ElementCard'
 
 export default function PeriodicTable({ 
@@ -7,22 +8,18 @@ export default function PeriodicTable({
   selectedCategory,
   searchTerm 
 }: PeriodicTableProps) {
-  // Create a map for quick element lookup by position
-  const elementsByPosition = new Map<string, Element>()
-  elements.forEach(element => {
-    const period = element.metadata.period || Math.ceil(element.metadata.atomic_number / 18)
-    const group = element.metadata.group || ((element.metadata.atomic_number - 1) % 18) + 1
-    elementsByPosition.set(`${period}-${group}`, element)
-  })
+  const { mainTableElements, lanthanides, actinides } = createElementLayout(elements);
 
-  // Render main periodic table (periods 1-7, groups 1-18)
+  // Render main periodic table (7 periods x 18 groups)
   const renderMainTable = (): JSX.Element[] => {
     const cells: JSX.Element[] = []
     
     for (let period = 1; period <= 7; period++) {
       for (let group = 1; group <= 18; group++) {
-        const key = `${period}-${group}`
-        const element = elementsByPosition.get(key)
+        const index = (period - 1) * 18 + (group - 1);
+        const element = mainTableElements[index];
+        
+        const key = `${period}-${group}`;
         
         if (element) {
           cells.push(
@@ -41,15 +38,33 @@ export default function PeriodicTable({
           )
         } else {
           // Empty cell for proper grid layout
+          // Special placeholders for lanthanides and actinides
+          let placeholder = null;
+          if (period === 6 && group === 3) {
+            placeholder = (
+              <div className="aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
+                57-71
+              </div>
+            );
+          } else if (period === 7 && group === 3) {
+            placeholder = (
+              <div className="aspect-square border-2 border-dashed border-white/30 rounded-lg flex items-center justify-center text-white/50 text-xs text-center p-1">
+                89-103
+              </div>
+            );
+          }
+          
           cells.push(
             <div
-              key={`empty-${period}-${group}`}
+              key={key}
               style={{ 
                 gridColumn: group,
                 gridRow: period
               }}
               className="aspect-square"
-            />
+            >
+              {placeholder}
+            </div>
           )
         }
       }
@@ -62,50 +77,44 @@ export default function PeriodicTable({
   const renderLanthanideActinide = (): JSX.Element[] => {
     const cells: JSX.Element[] = []
     
-    // Lanthanides (atomic numbers 57-71)
-    const lanthanides = elements.filter(el => 
-      el.metadata.atomic_number >= 57 && el.metadata.atomic_number <= 71
-    )
-    
-    // Actinides (atomic numbers 89-103)
-    const actinides = elements.filter(el => 
-      el.metadata.atomic_number >= 89 && el.metadata.atomic_number <= 103
-    )
-    
     // Render lanthanides in first row
     lanthanides.forEach((element, index) => {
-      cells.push(
-        <div
-          key={element.id}
-          style={{ 
-            gridColumn: index + 1,
-            gridRow: 1
-          }}
-        >
-          <ElementCard 
-            element={element}
-            onClick={onElementClick}
-          />
-        </div>
-      )
+      if (element) {
+        cells.push(
+          <div
+            key={element.id}
+            style={{ 
+              gridColumn: index + 1,
+              gridRow: 1
+            }}
+          >
+            <ElementCard 
+              element={element}
+              onClick={onElementClick}
+            />
+          </div>
+        )
+      }
     })
     
     // Render actinides in second row
     actinides.forEach((element, index) => {
-      cells.push(
-        <div
-          key={element.id}
-          style={{ 
-            gridColumn: index + 1,
-            gridRow: 2
-          }}
-        >
-          <ElementCard 
-            element={element}
-            onClick={onElementClick}
-          />
-        </div>
-      )
+      if (element) {
+        cells.push(
+          <div
+            key={element.id}
+            style={{ 
+              gridColumn: index + 1,
+              gridRow: 2
+            }}
+          >
+            <ElementCard 
+              element={element}
+              onClick={onElementClick}
+            />
+          </div>
+        )
+      }
     })
     
     return cells

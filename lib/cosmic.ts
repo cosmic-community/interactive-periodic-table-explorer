@@ -106,24 +106,6 @@ export async function getElementBySlug(slug: string): Promise<Element | null> {
   }
 }
 
-// Fetch all categories
-export async function getAllCategories(): Promise<Category[]> {
-  try {
-    const response = await cosmic.objects
-      .find({ type: 'categories' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1);
-    
-    return response.objects as Category[];
-  } catch (error) {
-    if (hasStatus(error) && error.status === 404) {
-      return [];
-    }
-    console.error('Error fetching categories:', error);
-    throw new Error('Failed to fetch categories');
-  }
-}
-
 // Get elements sorted by atomic number for proper periodic table display
 export async function getElementsForPeriodicTable(): Promise<Element[]> {
   try {
