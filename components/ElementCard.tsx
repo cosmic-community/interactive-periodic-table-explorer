@@ -8,19 +8,18 @@ interface ElementCardProps {
 
 export default function ElementCard({ element, onClick }: ElementCardProps) {
   const category = typeof element.metadata.category === 'object' 
-    ? element.metadata.category.value 
+    ? element.metadata.category.key 
     : element.metadata.category
 
-  const categoryColor = getCategoryColor(category)
+  const categoryColorClasses = getCategoryColor(category)
 
   return (
     <button
       onClick={() => onClick(element)}
-      className={`element-card w-full h-full ${categoryColor} border border-white/20 rounded-lg 
-                 flex flex-col items-center justify-center text-white text-shadow
-                 hover:border-white/40 hover:shadow-lg transition-all duration-200
-                 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent
-                 p-1`}
+      className={`element-card w-full h-full ${categoryColorClasses}
+                 rounded-lg flex flex-col items-center justify-center text-white text-shadow
+                 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 
+                 focus:ring-offset-2 focus:ring-offset-transparent p-1`}
       title={`${element.metadata.element_name} (${element.metadata.symbol}) - Atomic Number: ${element.metadata.atomic_number}`}
     >
       <div className="w-full h-full flex flex-col items-center justify-center min-h-0">
