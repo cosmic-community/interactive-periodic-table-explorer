@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 10% 3.9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --border: 240 3.7% 15.9%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .element-card {
+    @apply relative overflow-hidden rounded-lg transition-all duration-300;
+    @apply hover:scale-105 hover:shadow-xl cursor-pointer;
+    @apply glass-effect;
+  }
+
+  .element-card:hover {
+    @apply bg-white/20;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .periodic-table-grid {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 2px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .lanthanide-actinide-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 2rem auto 0;
+  }
+
+  .search-bar {
+    @apply w-full max-w-md mx-auto px-4 py-3 rounded-full;
+    @apply glass-effect placeholder-white/70 text-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-white/30;
+  }
+
+  .category-filter {
+    @apply flex flex-wrap gap-2 justify-center mb-6;
+  }
+
+  .category-button {
+    @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-200;
+    @apply glass-effect hover:bg-white/20;
+  }
+
+  .category-button.active {
+    @apply bg-white/30 ring-2 ring-white/50;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50;
+    @apply flex items-center justify-center p-4;
+  }
+
+  .modal-content {
+    @apply bg-white/95 backdrop-blur-md rounded-2xl p-6 max-w-2xl w-full;
+    @apply shadow-2xl border border-white/20 text-gray-900;
+    @apply animate-scale-in;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-800/20;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-white/30;
+}
+
+/* Responsive periodic table */
+@media (max-width: 1024px) {
+  .periodic-table-grid {
+    grid-template-columns: repeat(18, minmax(30px, 1fr));
+    gap: 1px;
+  }
+  
+  .lanthanide-actinide-grid {
+    grid-template-columns: repeat(15, minmax(30px, 1fr));
+    gap: 1px;
+  }
+}
+
+@media (max-width: 768px) {
+  .periodic-table-grid {
+    grid-template-columns: repeat(18, minmax(25px, 1fr));
+    gap: 1px;
+    font-size: 0.75rem;
+  }
+  
+  .lanthanide-actinide-grid {
+    grid-template-columns: repeat(15, minmax(25px, 1fr));
+    gap: 1px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .periodic-table-grid {
+    grid-template-columns: repeat(18, minmax(20px, 1fr));
+    gap: 1px;
+    font-size: 0.625rem;
+  }
+  
+  .lanthanide-actinide-grid {
+    grid-template-columns: repeat(15, minmax(20px, 1fr));
+    gap: 1px;
+    font-size: 0.625rem;
+  }
+  
+  .modal-content {
+    @apply p-4 max-h-[90vh] overflow-y-auto;
+  }
+}
