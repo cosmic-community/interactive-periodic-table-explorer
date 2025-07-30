@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Element, Category, ElementCategory } from '@/types'
+import { Element, Category } from '@/types'
 import PeriodicTable from '@/components/PeriodicTable'
 import SearchBar from '@/components/SearchBar'
 import CategoryFilter from '@/components/CategoryFilter'
@@ -17,7 +17,7 @@ export default function PeriodicTableContainer({
   categories 
 }: PeriodicTableContainerProps) {
   const [selectedElement, setSelectedElement] = useState<Element | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<ElementCategory | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
 
   // Filter elements based on search and category
@@ -28,7 +28,9 @@ export default function PeriodicTableContainer({
       element.metadata.atomic_number.toString().includes(searchTerm)
 
     const matchesCategory = !selectedCategory || 
-      element.metadata.category === selectedCategory
+      (typeof element.metadata.category === 'object' 
+        ? element.metadata.category.value === selectedCategory
+        : element.metadata.category === selectedCategory)
 
     return matchesSearch && matchesCategory
   })
@@ -41,7 +43,7 @@ export default function PeriodicTableContainer({
     setSelectedElement(null)
   }
 
-  const handleCategoryChange = (category: ElementCategory | null) => {
+  const handleCategoryChange = (category: string | null) => {
     setSelectedCategory(category)
   }
 

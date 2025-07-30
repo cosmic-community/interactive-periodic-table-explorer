@@ -16,8 +16,8 @@ export interface Element extends CosmicObject {
   metadata: {
     symbol: string;
     atomic_number: number;
-    atomic_mass: number;
-    category: ElementCategory;
+    atomic_weight?: string;
+    category: ElementCategory | { key: string; value: string };
     electron_configuration?: string;
     melting_point?: number;
     boiling_point?: number;
@@ -29,6 +29,8 @@ export interface Element extends CosmicObject {
     period?: number;
     group?: number;
     block?: string;
+    state?: ElementState | { key: string; value: string };
+    color_code?: string;
   };
 }
 
@@ -43,16 +45,23 @@ export interface Category extends CosmicObject {
 
 // Element category types
 export type ElementCategory = 
-  | 'alkali-metal'
-  | 'alkaline-earth'
-  | 'transition-metal'
-  | 'post-transition'
+  | 'alkali_metal'
+  | 'alkaline_earth_metal'
+  | 'transition_metal'
+  | 'post_transition_metal'
   | 'metalloid'
   | 'nonmetal'
   | 'halogen'
-  | 'noble-gas'
+  | 'noble_gas'
   | 'lanthanide'
   | 'actinide';
+
+// Element state types
+export type ElementState = 
+  | 'solid'
+  | 'liquid'
+  | 'gas'
+  | 'unknown';
 
 // API response types
 export interface CosmicResponse<T> {
@@ -72,7 +81,7 @@ export interface ElementCardProps {
 export interface PeriodicTableProps {
   elements: Element[];
   onElementClick?: (element: Element) => void;
-  selectedCategory?: ElementCategory | null;
+  selectedCategory?: string | null;
   searchTerm?: string;
 }
 
@@ -84,8 +93,8 @@ export interface ElementModalProps {
 
 export interface CategoryFilterProps {
   categories: Category[];
-  selectedCategory: ElementCategory | null;
-  onCategoryChange: (category: ElementCategory | null) => void;
+  selectedCategory: string | null;
+  onCategoryChange: (category: string | null) => void;
 }
 
 export interface SearchBarProps {
@@ -104,7 +113,6 @@ export function isCategory(obj: CosmicObject): obj is Category {
 }
 
 // Utility types
-export type OptionalMetadata<T> = Partial<T['metadata']>;
 export type CreateElementData = Omit<Element, 'id' | 'created_at' | 'modified_at'>;
 
 // Element position calculation for periodic table layout
@@ -116,28 +124,28 @@ export interface ElementPosition {
 
 // Category color mapping
 export const CATEGORY_COLORS: Record<ElementCategory, string> = {
-  'alkali-metal': '#ff6b6b',
-  'alkaline-earth': '#4ecdc4',
-  'transition-metal': '#45b7d1',
-  'post-transition': '#96ceb4',
+  'alkali_metal': '#ff6b6b',
+  'alkaline_earth_metal': '#4ecdc4',
+  'transition_metal': '#45b7d1',
+  'post_transition_metal': '#96ceb4',
   'metalloid': '#feca57',
   'nonmetal': '#ff9ff3',
   'halogen': '#54a0ff',
-  'noble-gas': '#5f27cd',
+  'noble_gas': '#5f27cd',
   'lanthanide': '#00d2d3',
   'actinide': '#ff9f43',
 };
 
 // Category display names
 export const CATEGORY_NAMES: Record<ElementCategory, string> = {
-  'alkali-metal': 'Alkali Metals',
-  'alkaline-earth': 'Alkaline Earth Metals',
-  'transition-metal': 'Transition Metals',
-  'post-transition': 'Post-transition Metals',
+  'alkali_metal': 'Alkali Metals',
+  'alkaline_earth_metal': 'Alkaline Earth Metals',
+  'transition_metal': 'Transition Metals',
+  'post_transition_metal': 'Post-transition Metals',
   'metalloid': 'Metalloids',
   'nonmetal': 'Nonmetals',
   'halogen': 'Halogens',
-  'noble-gas': 'Noble Gases',
+  'noble_gas': 'Noble Gases',
   'lanthanide': 'Lanthanides',
   'actinide': 'Actinides',
 };

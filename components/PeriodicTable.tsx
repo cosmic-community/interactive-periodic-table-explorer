@@ -1,4 +1,4 @@
-import { PeriodicTableProps } from '@/types'
+import { PeriodicTableProps, Element, ElementPosition } from '@/types'
 import ElementCard from '@/components/ElementCard'
 
 export default function PeriodicTable({ 
@@ -8,7 +8,7 @@ export default function PeriodicTable({
   searchTerm 
 }: PeriodicTableProps) {
   // Create a map for quick element lookup by position
-  const elementsByPosition = new Map()
+  const elementsByPosition = new Map<string, Element>()
   elements.forEach(element => {
     const period = element.metadata.period || Math.ceil(element.metadata.atomic_number / 18)
     const group = element.metadata.group || ((element.metadata.atomic_number - 1) % 18) + 1
@@ -16,8 +16,8 @@ export default function PeriodicTable({
   })
 
   // Render main periodic table (periods 1-7, groups 1-18)
-  const renderMainTable = () => {
-    const cells = []
+  const renderMainTable = (): JSX.Element[] => {
+    const cells: JSX.Element[] = []
     
     for (let period = 1; period <= 7; period++) {
       for (let group = 1; group <= 18; group++) {
@@ -59,8 +59,8 @@ export default function PeriodicTable({
   }
 
   // Render lanthanides and actinides separately
-  const renderLanthanideActinide = () => {
-    const cells = []
+  const renderLanthanideActinide = (): JSX.Element[] => {
+    const cells: JSX.Element[] = []
     
     // Lanthanides (atomic numbers 57-71)
     const lanthanides = elements.filter(el => 

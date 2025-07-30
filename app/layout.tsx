@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import CosmicBadge from '@/components/CosmicBadge'
-import { getBucketSlug } from '@/lib/cosmic'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +19,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const bucketSlug = await getBucketSlug()
+  const bucketSlug = process.env.COSMIC_BUCKET_SLUG as string
 
   return (
     <html lang="en">
