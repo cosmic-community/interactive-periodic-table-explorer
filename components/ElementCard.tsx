@@ -1,7 +1,12 @@
-import { ElementCardProps, CATEGORY_COLORS } from '@/types'
+import { ElementCardProps, CATEGORY_COLORS, ElementCategory } from '@/types'
 
 export default function ElementCard({ element, onClick, className = '' }: ElementCardProps) {
-  const categoryColor = CATEGORY_COLORS[element.metadata.category] || '#6b7280'
+  // Handle category being either a string or Cosmic select-dropdown object
+  const categoryValue = typeof element.metadata.category === 'string' 
+    ? element.metadata.category 
+    : element.metadata.category?.value || 'nonmetal'
+  
+  const categoryColor = CATEGORY_COLORS[categoryValue as ElementCategory] || '#6b7280'
   
   const handleClick = () => {
     onClick?.(element)
@@ -9,7 +14,7 @@ export default function ElementCard({ element, onClick, className = '' }: Elemen
 
   return (
     <div 
-      className={`element-card aspect-square p-2 text-center ${className}`}
+      className={`element-card aspect-square p-2 text-center cursor-pointer border-2 rounded-lg transition-all duration-200 hover:scale-105 relative ${className}`}
       style={{
         backgroundColor: `${categoryColor}20`,
         borderColor: `${categoryColor}40`,
@@ -35,10 +40,12 @@ export default function ElementCard({ element, onClick, className = '' }: Elemen
           {element.title}
         </div>
         
-        {/* Atomic mass */}
-        <div className="text-xs text-white/70">
-          {element.metadata.atomic_mass?.toFixed(2)}
-        </div>
+        {/* Atomic weight - fixed property name */}
+        {element.metadata.atomic_weight && (
+          <div className="text-xs text-white/70">
+            {parseFloat(element.metadata.atomic_weight).toFixed(2)}
+          </div>
+        )}
       </div>
       
       {/* Hover overlay */}
