@@ -12,7 +12,8 @@ async function getElements(): Promise<Element[]> {
       .depth(1)
     return objects || []
   } catch (error) {
-    if (error.status === 404) {
+    // Type-safe error handling - check if error has status property
+    if (error && typeof error === 'object' && 'status' in error && (error as any).status === 404) {
       return []
     }
     throw error
