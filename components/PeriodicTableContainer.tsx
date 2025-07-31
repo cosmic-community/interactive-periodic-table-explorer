@@ -53,12 +53,14 @@ export default function PeriodicTableContainer({
 
   return (
     <>
-      <div className="space-y-8">
-        <SearchBar 
-          searchTerm={searchTerm}
-          onSearchChange={handleSearchChange}
-          placeholder="Search elements by name, symbol, or atomic number..."
-        />
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <SearchBar 
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            placeholder="Search elements..."
+          />
+        </div>
 
         <CategoryFilter 
           categories={categories}

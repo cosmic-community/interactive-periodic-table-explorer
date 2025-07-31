@@ -25,25 +25,37 @@ export default function CategoryFilter({
   ]
 
   return (
-    <div className="flex flex-wrap gap-2 justify-center">
+    <div className="flex flex-wrap gap-1 justify-center">
       <button
         onClick={() => onCategoryChange(null)}
-        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+        className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
           !selectedCategory
             ? 'bg-blue-600 text-white'
             : 'bg-white/10 text-white/80 hover:bg-white/20'
         }`}
       >
-        All Categories
+        All
       </button>
       
       {categoryOptions.map((category) => {
         const categoryColor = CATEGORY_COLORS[category];
+        // Shortened labels for compact display
+        const shortLabel = category
+          .replace('Transition metal (predicted)', 'Trans. (pred.)')
+          .replace('Post-transition metal (predicted)', 'Post-trans. (pred.)')
+          .replace('Noble gas (predicted)', 'Noble (pred.)')
+          .replace('Halogen (predicted)', 'Halogen (pred.)')
+          .replace('Alkaline earth metal', 'Alkaline earth')
+          .replace('Post-transition metal', 'Post-transition')
+          .replace('Transition metal', 'Transition')
+          .replace('Unknown / Synthetic', 'Unknown/Synth.')
+          .replace('Reactive nonmetal', 'Reactive nonmet.');
+          
         return (
           <button
             key={category}
             onClick={() => onCategoryChange(category)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
               selectedCategory === category
                 ? 'text-white'
                 : 'bg-white/10 text-white/80 hover:bg-white/20'
@@ -53,8 +65,9 @@ export default function CategoryFilter({
                 ? { backgroundColor: categoryColor }
                 : {}
             }
+            title={category} // Full category name on hover
           >
-            {category}
+            {shortLabel}
           </button>
         );
       })}

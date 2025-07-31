@@ -1,19 +1,49 @@
-import { getElementsForPeriodicTable } from '@/lib/cosmic'
-import PeriodicTableContainer from '@/components/PeriodicTableContainer'
+import { cosmic } from '@/lib/cosmic'
+import { Element, Category } from '@/types'
 import Header from '@/components/Header'
+import PeriodicTableContainer from '@/components/PeriodicTableContainer'
+import CosmicBadge from '@/components/CosmicBadge'
 
-export default async function HomePage() {
-  const elements = await getElementsForPeriodicTable()
+async function getElements(): Promise<Element[]> {
+  try {
+    const { objects } = await cosmic.objects
+      .find({ type: 'elements' })
+      .props(['id', 'title', 'slug', 'metadata'])
+      .depth(1)
+    return objects || []
+  } catch (error) {
+    if (error.status === 404) {
+      return []
+    }
+    throw error
+  }
+}
+
+async function getCategories(): Promise<Category[]> {
+  // Return empty array as categories are handled by the element's category metafield
+  return []
+}
+
+export default async function Home() {
+  const [elements, categories] = await Promise.all([
+    getElements(),
+    getCategories()
+  ])
+
+  const bucketSlug = process.env.COSMIC_BUCKET_SLUG as string
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="main-layout no-scroll">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      
+      <main className="content-area">
         <PeriodicTableContainer 
-          elements={elements}
-          categories={[]} // We'll use hardcoded categories from the metadata
+          elements={elements} 
+          categories={categories}
         />
-      </div>
-    </main>
+      </main>
+      
+      <CosmicBadge bucketSlug={bucketSlug} />
+    </div>
   )
 }
