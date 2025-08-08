@@ -18,6 +18,7 @@ export interface Element extends CosmicObject {
     symbol: string;
     atomic_number: number;
     category: ElementCategory | { key: string; value: string };
+    can_i_lick_it?: LickabilityRating | { key: string; value: string };
     atomic_weight?: string;
     electron_configuration?: string;
     melting_point?: number;
@@ -42,6 +43,76 @@ export interface Category extends CosmicObject {
     color?: string;
     description?: string;
   };
+}
+
+// Lickability rating types based on Cosmic data
+export type LickabilityRating = 
+  | 'sure_probably_fine'
+  | 'maybe_not_good_idea'
+  | 'you_really_shouldnt'
+  | 'please_reconsider';
+
+// Lickability display values
+export const LICKABILITY_OPTIONS: Record<string, { 
+  value: string; 
+  color: string; 
+  emoji: string;
+  description: string;
+}> = {
+  'Sure, it\'s probably fine': { 
+    value: 'Sure, it\'s probably fine', 
+    color: '#22c55e', 
+    emoji: '✅',
+    description: 'Generally safe elements that won\'t cause immediate harm'
+  },
+  'Maybe not a good idea': { 
+    value: 'Maybe not a good idea', 
+    color: '#eab308', 
+    emoji: '⚠️',
+    description: 'Proceed with caution - not recommended but not immediately deadly'
+  },
+  'You really shouldn\'t': { 
+    value: 'You really shouldn\'t', 
+    color: '#f97316', 
+    emoji: '🚨',
+    description: 'Definitely not recommended - could cause serious harm'
+  },
+  'Please reconsider': { 
+    value: 'Please reconsider', 
+    color: '#ef4444', 
+    emoji: '☠️',
+    description: 'Absolutely do not attempt - potentially lethal'
+  }
+};
+
+// Game state interfaces
+export interface GameState {
+  score: number;
+  streak: number;
+  totalGuesses: number;
+  correctGuesses: number;
+  currentElement: Element | null;
+  gameMode: 'explore' | 'guess';
+  achievements: Achievement[];
+  guessedElements: Set<string>;
+}
+
+export interface GuessResult {
+  isCorrect: boolean;
+  userGuess: string;
+  actualRating: string;
+  pointsEarned: number;
+  newStreak: number;
+  achievementUnlocked?: Achievement;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+  unlockedAt?: Date;
+  condition: (gameState: GameState, element?: Element) => boolean;
 }
 
 // Element category types based on the Cosmic data
@@ -82,6 +153,7 @@ export interface ElementCardProps {
   element: Element;
   onClick?: (element: Element) => void;
   className?: string;
+  showLickabilityBadge?: boolean;
 }
 
 export interface PeriodicTableProps {
@@ -89,12 +161,34 @@ export interface PeriodicTableProps {
   onElementClick?: (element: Element) => void;
   selectedCategory?: string | null;
   searchTerm?: string;
+  gameMode?: 'explore' | 'guess';
 }
 
 export interface ElementModalProps {
   element: Element | null;
   isOpen: boolean;
   onClose: () => void;
+  gameMode?: 'explore' | 'guess';
+}
+
+export interface LickGuessModalProps {
+  element: Element | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onGuess: (guess: string) => void;
+  gameState: GameState;
+}
+
+export interface GameStatsProps {
+  gameState: GameState;
+  onToggleMode: (mode: 'explore' | 'guess') => void;
+  onResetGame: () => void;
+}
+
+export interface LickabilityBadgeProps {
+  rating: string;
+  size?: 'sm' | 'md' | 'lg';
+  showText?: boolean;
 }
 
 export interface CategoryFilterProps {
@@ -116,6 +210,30 @@ export function isElement(obj: CosmicObject): obj is Element {
 
 export function isCategory(obj: CosmicObject): obj is Category {
   return obj.type === 'categories';
+}
+
+// Utility functions for lickability
+export function getLickabilityInfo(element: Element) {
+  const rating = typeof element.metadata.can_i_lick_it === 'object'
+    ? element.metadata.can_i_lick_it?.value || 'Unknown'
+    : element.metadata.can_i_lick_it || 'Unknown';
+    
+  return LICKABILITY_OPTIONS[rating] || {
+    value: 'Unknown',
+    color: '#6b7280',
+    emoji: '❓',
+    description: 'Safety information not available'
+  };
+}
+
+export function getLickabilityScore(rating: string): number {
+  const scores: Record<string, number> = {
+    'Sure, it\'s probably fine': 1,
+    'Maybe not a good idea': 2,
+    'You really shouldn\'t': 3,
+    'Please reconsider': 4
+  };
+  return scores[rating] || 0;
 }
 
 // Utility types

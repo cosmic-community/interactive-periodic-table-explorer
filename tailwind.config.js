@@ -1,54 +1,83 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
     extend: {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        gold: {
+          400: 'var(--gold-400)',
+          500: 'var(--gold-500)'
+        }
       },
-      // Extend opacity values to ensure all translucent values work properly
-      opacity: {
-        '15': '0.15',
-        '25': '0.25',
-        '35': '0.35',
-        '45': '0.45',
-        '85': '0.85',
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gold-gradient': 'linear-gradient(135deg, var(--gold-400), var(--gold-500))'
       },
-      // Add custom backdrop blur values if needed
-      backdropBlur: {
-        xs: '2px',
+      animation: {
+        'achievement-unlock': 'achievement-unlock 0.6s ease-out',
+        'score-popup': 'score-popup 1s ease-out',
+        'bounce-in': 'bounce-in 0.6s ease-out'
       },
-      // Ensure proper text shadow utilities
-      textShadow: {
-        'sm': '1px 1px 2px rgba(0, 0, 0, 0.5)',
-        'default': '2px 2px 4px rgba(0, 0, 0, 0.5)',
-        'lg': '3px 3px 6px rgba(0, 0, 0, 0.5)',
+      keyframes: {
+        'achievement-unlock': {
+          '0%': { 
+            transform: 'scale(0) rotate(-180deg)', 
+            opacity: '0' 
+          },
+          '50%': { 
+            transform: 'scale(1.2) rotate(0deg)', 
+            opacity: '1' 
+          },
+          '100%': { 
+            transform: 'scale(1) rotate(0deg)', 
+            opacity: '1' 
+          }
+        },
+        'score-popup': {
+          '0%': {
+            transform: 'translateY(0) scale(1)',
+            opacity: '1'
+          },
+          '50%': {
+            transform: 'translateY(-20px) scale(1.2)',
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'translateY(-40px) scale(1)',
+            opacity: '0'
+          }
+        },
+        'bounce-in': {
+          '0%': {
+            transform: 'scale(0)',
+            opacity: '0'
+          },
+          '50%': {
+            transform: 'scale(1.1)',
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'scale(1)',
+            opacity: '1'
+          }
+        }
+      },
+      aspectRatio: {
+        'card': '1 / 1'
       }
     },
   },
-  plugins: [
-    // Add text shadow plugin if needed
-    function({ addUtilities }) {
-      const newUtilities = {
-        '.text-shadow': {
-          textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
-        },
-        '.text-shadow-sm': {
-          textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
-        },
-        '.text-shadow-lg': {
-          textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-        },
-        '.text-shadow-none': {
-          textShadow: 'none',
-        },
-      }
-      addUtilities(newUtilities)
-    }
-  ],
+  plugins: [],
 }
+
+export default config

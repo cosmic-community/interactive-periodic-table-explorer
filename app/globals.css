@@ -6,6 +6,10 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 15, 23, 42;
   --background-end-rgb: 88, 28, 135;
+  
+  /* Custom colors for achievements */
+  --gold-400: #facc15;
+  --gold-500: #eab308;
 }
 
 * {
@@ -67,6 +71,39 @@ a {
   width: 100%;
   height: auto;
   font-size: 0.6rem;
+}
+
+/* Game indicator dot */
+.element-card .game-indicator {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  background-color: #10b981;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+/* Guessed element styling */
+.element-card.guessed {
+  box-shadow: 0 0 0 2px #fbbf24;
+}
+
+/* Achievement animation */
+@keyframes achievement-unlock {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.achievement-unlock {
+  animation: achievement-unlock 0.6s ease-out;
+}
+
+/* Gold gradient for achievements */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
 }
 
 /* Mobile First - Small screens */
@@ -145,12 +182,18 @@ a {
 /* Smooth hover animations */
 .element-card {
   transform-origin: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.element-card:hover {
+.element-card:hover:not(:disabled) {
   z-index: 10;
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.element-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Modal backdrop blur */
@@ -195,4 +238,46 @@ input:focus {
 /* Ensure no horizontal scroll */
 .no-scroll {
   overflow-x: hidden;
+}
+
+/* Game UI animations */
+.score-popup {
+  animation: score-popup 1s ease-out;
+}
+
+@keyframes score-popup {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Lickability badge hover effects */
+.lickability-badge {
+  transition: transform 0.2s ease;
+}
+
+.lickability-badge:hover {
+  transform: scale(1.05);
+}
+
+/* Game mode indicator */
+.game-mode-active .element-card::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  z-index: 1;
 }

@@ -4,17 +4,17 @@ export default function Header() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Interactive Periodic Table Explorer
+            Can You Lick It? 🧪👅
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-2">
-            Discover the Elements of the Universe
+            The Ultimate Elemental Safety Guessing Game
           </p>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Explore all 118 elements with detailed information, interactive filtering, and beautiful visualizations. 
-            Click on any element to learn more about its properties, uses, and history.
+            Test your chemistry knowledge by guessing which elements are safe to lick and which ones would probably kill you. 
+            Learn about all 118 elements through humor, science, and questionable life choices!
           </p>
         </div>
       </div>
     </header>
-  )
+  );
 }

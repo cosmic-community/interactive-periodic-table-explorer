@@ -1,13 +1,15 @@
-import { PeriodicTableProps, Element } from '@/types'
-import { createElementLayout } from '@/lib/periodicTableLayout'
-import ElementCard from '@/components/ElementCard'
+import { PeriodicTableProps, Element } from '@/types';
+import { createElementLayout } from '@/lib/periodicTableLayout';
+import ElementCard from '@/components/ElementCard';
 
 export default function PeriodicTable({ 
   elements, 
   onElementClick, 
   selectedCategory,
-  searchTerm 
-}: PeriodicTableProps) {
+  searchTerm,
+  gameMode = 'explore',
+  guessedElements = new Set()
+}: PeriodicTableProps & { guessedElements?: Set<string> }) {
   const { mainTableElements, lanthanides, actinides } = createElementLayout(elements);
 
   // Safe handler that checks if onElementClick is defined
@@ -19,7 +21,7 @@ export default function PeriodicTable({
 
   // Render main periodic table (7 periods x 18 groups)
   const renderMainTable = (): JSX.Element[] => {
-    const cells: JSX.Element[] = []
+    const cells: JSX.Element[] = [];
     
     for (let period = 1; period <= 7; period++) {
       for (let group = 1; group <= 18; group++) {
@@ -41,9 +43,12 @@ export default function PeriodicTable({
               <ElementCard 
                 element={element}
                 onClick={handleElementClick}
+                gameMode={gameMode}
+                isGuessed={guessedElements.has(element.id)}
+                showLickabilityBadge={gameMode === 'explore'}
               />
             </div>
-          )
+          );
         } else {
           // Empty cell for proper grid layout
           // Special placeholders for lanthanides and actinides
@@ -73,17 +78,17 @@ export default function PeriodicTable({
             >
               {placeholder}
             </div>
-          )
+          );
         }
       }
     }
     
-    return cells
-  }
+    return cells;
+  };
 
   // Render lanthanides and actinides separately
   const renderLanthanideActinide = (): JSX.Element[] => {
-    const cells: JSX.Element[] = []
+    const cells: JSX.Element[] = [];
     
     // Render lanthanides in first row
     lanthanides.forEach((element, index) => {
@@ -100,11 +105,14 @@ export default function PeriodicTable({
             <ElementCard 
               element={element}
               onClick={handleElementClick}
+              gameMode={gameMode}
+              isGuessed={guessedElements.has(element.id)}
+              showLickabilityBadge={gameMode === 'explore'}
             />
           </div>
-        )
+        );
       }
-    })
+    });
     
     // Render actinides in second row
     actinides.forEach((element, index) => {
@@ -121,14 +129,17 @@ export default function PeriodicTable({
             <ElementCard 
               element={element}
               onClick={handleElementClick}
+              gameMode={gameMode}
+              isGuessed={guessedElements.has(element.id)}
+              showLickabilityBadge={gameMode === 'explore'}
             />
           </div>
-        )
+        );
       }
-    })
+    });
     
-    return cells
-  }
+    return cells;
+  };
 
   if (elements.length === 0) {
     return (
@@ -139,11 +150,32 @@ export default function PeriodicTable({
             : 'No elements available.'}
         </p>
       </div>
-    )
+    );
   }
+
+  const elementsWithLickabilityData = elements.filter(element => {
+    const lickabilityRating = typeof element.metadata.can_i_lick_it === 'object'
+      ? element.metadata.can_i_lick_it?.value || ''
+      : element.metadata.can_i_lick_it || '';
+    return lickabilityRating && lickabilityRating !== '';
+  });
 
   return (
     <div className="w-full space-y-8 no-scroll">
+      {/* Game mode info */}
+      {gameMode === 'guess' && (
+        <div className="text-center text-white/90 bg-white/10 rounded-lg p-4">
+          <p className="text-lg font-semibold mb-2">
+            🎯 Game Mode Active!
+          </p>
+          <p className="text-sm">
+            Elements with a green dot have lickability data - click them to make your guess!<br/>
+            <span className="text-yellow-400">✓</span> = Already guessed | 
+            Available: {elementsWithLickabilityData.length} elements
+          </p>
+        </div>
+      )}
+
       {/* Main periodic table */}
       <div className="periodic-table-container">
         <div className="periodic-table-grid">
@@ -165,5 +197,5 @@ export default function PeriodicTable({
         </div>
       </div>
     </div>
-  )
+  );
 }

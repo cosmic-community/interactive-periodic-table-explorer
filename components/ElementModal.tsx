@@ -1,36 +1,53 @@
-'use client'
+'use client';
 
-import { ElementModalProps, CATEGORY_COLORS, DEFAULT_ELEMENT_COLOR } from '@/types'
-import { useEffect } from 'react'
+import { ElementModalProps, CATEGORY_COLORS, DEFAULT_ELEMENT_COLOR, GuessResult } from '@/types';
+import { useEffect } from 'react';
+import LickabilityBadge from './LickabilityBadge';
 
-export default function ElementModal({ element, isOpen, onClose }: ElementModalProps) {
+interface ExtendedElementModalProps extends ElementModalProps {
+  guessResult?: GuessResult | null;
+  explanation?: string;
+}
+
+export default function ElementModal({ 
+  element, 
+  isOpen, 
+  onClose, 
+  gameMode = 'explore',
+  guessResult,
+  explanation
+}: ExtendedElementModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
+      if (e.key === 'Escape') onClose();
+    };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, onClose])
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
 
-  if (!isOpen || !element) return null
+  if (!isOpen || !element) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose()
-  }
+    if (e.target === e.currentTarget) onClose();
+  };
 
   const categoryValue = typeof element.metadata.category === 'string' 
     ? element.metadata.category 
-    : element.metadata.category?.value || 'Unknown'
+    : element.metadata.category?.value || 'Unknown';
     
-  const categoryColor = CATEGORY_COLORS[categoryValue] || DEFAULT_ELEMENT_COLOR
+  const categoryColor = CATEGORY_COLORS[categoryValue] || DEFAULT_ELEMENT_COLOR;
+
+  const lickabilityRating = typeof element.metadata.can_i_lick_it === 'object'
+    ? element.metadata.can_i_lick_it?.value || ''
+    : element.metadata.can_i_lick_it || '';
 
   return (
     <div 
@@ -60,6 +77,67 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
               ×
             </button>
           </div>
+
+          {/* Game Result Section */}
+          {gameMode === 'guess' && guessResult && (
+            <div className={`mb-6 p-4 rounded-lg ${
+              guessResult.isCorrect 
+                ? 'bg-green-100 border border-green-300' 
+                : 'bg-red-100 border border-red-300'
+            }`}>
+              <div className="text-center">
+                <div className="text-4xl mb-2">
+                  {guessResult.isCorrect ? '🎉' : '😅'}
+                </div>
+                <h3 className={`text-xl font-bold mb-2 ${
+                  guessResult.isCorrect ? 'text-green-800' : 'text-red-800'
+                }`}>
+                  {guessResult.isCorrect ? 'Correct!' : 'Not quite!'}
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="font-medium">Your guess:</span> {guessResult.userGuess}
+                  </div>
+                  <div>
+                    <span className="font-medium">Actual rating:</span> {guessResult.actualRating}
+                  </div>
+                  <div className={`text-lg font-bold ${
+                    guessResult.isCorrect ? 'text-green-600' : 'text-gray-600'
+                  }`}>
+                    +{guessResult.pointsEarned} points
+                    {guessResult.newStreak > 1 && ` (${guessResult.newStreak} streak!)`}
+                  </div>
+                </div>
+
+                {guessResult.achievementUnlocked && (
+                  <div className="mt-3 p-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg">
+                    <div className="text-lg">🏆 Achievement Unlocked!</div>
+                    <div className="font-bold">
+                      {guessResult.achievementUnlocked.emoji} {guessResult.achievementUnlocked.title}
+                    </div>
+                    <div className="text-sm opacity-90">
+                      {guessResult.achievementUnlocked.description}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Lickability Section */}
+          {lickabilityRating && (
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3 text-lg">🤔 Can You Lick It?</h3>
+              <div className="flex items-center gap-3 mb-3">
+                <LickabilityBadge rating={lickabilityRating} size="lg" />
+              </div>
+              {explanation && (
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-gray-700 leading-relaxed">{explanation}</p>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
@@ -192,8 +270,25 @@ export default function ElementModal({ element, isOpen, onClose }: ElementModalP
               <p className="text-gray-700 leading-relaxed">{element.metadata.properties}</p>
             </div>
           )}
+
+          {/* Safety Disclaimer */}
+          {lickabilityRating && (
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-start gap-2">
+                <span className="text-yellow-600 text-lg">⚠️</span>
+                <div>
+                  <h4 className="font-semibold text-yellow-800 mb-1">Safety Disclaimer</h4>
+                  <p className="text-yellow-700 text-sm">
+                    This is an educational game for entertainment purposes only. 
+                    DO NOT actually attempt to lick any chemical elements. 
+                    Always follow proper laboratory safety protocols when handling chemicals.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
