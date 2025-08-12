@@ -88,7 +88,7 @@ export function useGameState() {
       actualRating,
       pointsEarned,
       newStreak,
-      achievementUnlocked: newAchievement
+      achievementUnlocked: newAchievement || undefined
     };
   }, [gameState]);
 

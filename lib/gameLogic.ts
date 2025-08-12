@@ -196,5 +196,5 @@ export function getRandomUnguessedElement(elements: Element[], guessedIds: Set<s
   if (unguessedElements.length === 0) return null;
   
   const randomIndex = Math.floor(Math.random() * unguessedElements.length);
-  return unguessedElements[randomIndex];
+  return unguessedElements[randomIndex] || null;
 }
