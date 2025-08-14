@@ -1,187 +1,181 @@
-# Can You Lick It? - Interactive Periodic Table Game
+# Interactive Periodic Table Explorer
 
-![Periodic Table Preview](https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=2000&auto=format,compress)
+An interactive periodic table application powered by Cosmic CMS that lets you explore chemical elements and test your knowledge with the fun "Can I Lick It?" game mode.
 
-A hilarious and educational game built with Next.js and Cosmic CMS where you guess which chemical elements are safe to lick and which ones would probably kill you. Learn chemistry through comedy while exploring all 118 elements!
+## Features
 
-## 🎮 Game Features
+- 🧪 **Interactive Periodic Table**: Click on any element to view detailed information
+- 🎮 **"Can I Lick It?" Game**: Test your knowledge of element safety in a fun guessing game
+- 🏆 **Achievement System**: Unlock achievements as you play and learn
+- 🔍 **Search & Filter**: Find elements by name, symbol, or category
+- 📱 **Responsive Design**: Works perfectly on desktop and mobile devices
+- 🎯 **Educational Content**: Learn about atomic properties, categories, and safety information
 
-- 🎯 **Lickability Guessing Game**: Test your knowledge of elemental safety
-- 📊 **Score Tracking**: Keep track of correct guesses and streaks  
-- 🏆 **Achievement System**: Unlock achievements for consecutive correct guesses
-- 😂 **Comedic Safety Ratings**: From "Sure, probably fine" to "Please reconsider"
-- 🧪 **Educational**: Learn why elements are safe or dangerous through humor
-- 📱 **Fully Responsive**: Perfect experience on all devices
-- ✨ **Beautiful Design**: Glass-morphism UI with smooth animations
+## Game Modes
 
-## 🎲 How to Play
+### Explore Mode
+Browse the periodic table freely, view element details, and see safety ratings for each element.
 
-1. **Click any element** on the periodic table
-2. **Make your guess**: Is it safe to lick or not?
-3. **See the answer**: Learn the actual safety rating with fun explanations
-4. **Build your streak**: Get consecutive answers right for higher scores
-5. **Unlock achievements**: Master the art of elemental lickability assessment
+### Guess Mode  
+Test your chemistry knowledge! Guess whether elements are safe to lick based on their properties. Earn points for correct guesses and unlock achievements.
 
-## 🏅 Safety Categories
+## Tech Stack
 
-- **🟢 Sure, probably fine**: Generally safe elements (like carbon in graphite)
-- **🟡 Maybe not a good idea**: Proceed with caution 
-- **🟠 You really shouldn't**: Definitely not recommended
-- **🔴 Please reconsider**: Absolutely do not attempt (like plutonium!)
-
-## Clone this Bucket and Code Repository
-
-Want to create your own version of this hilarious chemistry game? Clone this Cosmic bucket and code repository to get started instantly:
-
-[![Clone this Bucket and Code Repository](https://img.shields.io/badge/Clone%20this%20Bucket-29abe2?style=for-the-badge&logo=cosmic&logoColor=white)](https://app.cosmic-staging.com/projects/new?clone_bucket=68896c2e2dcc7fbc00c94eb9&clone_repository=688a37862dcc7fbc00c94ee3)
-
-## Prompts
-
-This application was built using the following prompts to generate the content structure and code:
-
-### Original Content Model Prompt
-
-> "I want to build a beautiful modern looking periodic table"
-
-### Game Transformation Prompt
-
-> "I want to turn this into a fun game of can you lick the element or not, where you have to guess which elements would be safe to consume and which would not be great or probably kill you. Do you think you can update this site into that more comedical fun game of a site while still keeping it looking good and informative?"
-
-The app combines serious chemistry education with humor to make learning about elements memorable and entertaining.
-
-## Technologies Used
-
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Modern styling and responsive design
-- **Cosmic CMS** - Headless CMS for content management
-- **React** - Component-based UI library
-- **CSS Grid** - Advanced layout for periodic table structure
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Content Management**: Cosmic CMS
+- **Deployment**: Vercel-ready
 
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js 18+ or Bun
-- A Cosmic account and bucket
+- A Cosmic CMS account and bucket
 
 ### Installation
 
-1. Clone this repository
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd interactive-periodic-table-explorer
+```
+
 2. Install dependencies:
-   ```bash
-   bun install
-   ```
+```bash
+bun install
+```
 
-3. Set up your environment variables:
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Add your Cosmic credentials:
-   ```
-   COSMIC_BUCKET_SLUG=your-bucket-slug
-   COSMIC_READ_KEY=your-read-key
-   COSMIC_WRITE_KEY=your-write-key
-   ```
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-4. Run the development server:
-   ```bash
-   bun run dev
-   ```
+4. Configure your `.env.local` file with your Cosmic CMS credentials:
+```env
+COSMIC_BUCKET_SLUG=your-bucket-slug
+COSMIC_READ_KEY=your-read-key  
+COSMIC_WRITE_KEY=your-write-key
+```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Run the development server:
+```bash
+bun dev
+```
 
-## Cosmic CMS Integration
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This application uses Cosmic CMS to manage all periodic table data and lickability assessments. The content model includes:
+## Data Management
 
-### Element Object Type
-- **Title**: Element name (e.g., "Hydrogen", "Plutonium")
-- **Slug**: URL-friendly identifier
-- **Metadata**:
-  - `element_name`: Full element name
-  - `symbol`: Chemical symbol (H, Pu, etc.)
-  - `atomic_number`: Atomic number (1, 94, etc.)
-  - `category`: Element category (alkali-metals, actinides, etc.)
-  - `can_i_lick_it`: Safety assessment with options:
-    - "Sure, it's probably fine"
-    - "Maybe not a good idea"  
-    - "You really shouldn't"
-    - "Please reconsider"
+### Updating Element Lickability Data
 
-## Game Mechanics
+To update the "Can I Lick It" classifications for all elements using CSV data:
+
+1. Ensure your environment variables are set up correctly
+2. Run the update script:
+```bash
+bun run update-lickability
+```
+
+This script will:
+- Fetch all elements from your Cosmic CMS
+- Update each element's lickability rating based on the predefined CSV data
+- Provide progress updates and error handling
+- Skip elements that don't have corresponding data
+
+### Content Structure
+
+The app uses the following Cosmic CMS Object Types:
+
+#### Elements Object Type
+- **Slug**: `elements`
+- **Fields**:
+  - Element Name (text)
+  - Symbol (text, max 3 characters)  
+  - Atomic Number (number)
+  - Category (select dropdown)
+  - Can I Lick It (select dropdown)
+
+#### Categories
+Elements are classified into standard periodic table categories:
+- Reactive nonmetal
+- Noble gas  
+- Alkali metal
+- Alkaline earth metal
+- Metalloid
+- Halogen
+- Post-transition metal
+- Transition metal
+- Lanthanide
+- Actinide
+- And predicted categories for synthetic elements
+
+#### Lickability Ratings
+- 🟢 **"Sure, it's probably fine"** - Generally safe elements
+- 🟡 **"Maybe not a good idea"** - Proceed with caution
+- 🟠 **"You really shouldn't"** - Definitely not recommended  
+- 🔴 **"Please reconsider"** - Absolutely do not attempt
+
+## Game Features
 
 ### Scoring System
-- **Correct Guess**: +10 points
-- **Streak Bonus**: +5 additional points per consecutive correct answer
-- **Wrong Guess**: Streak resets to 0
+- Base points for correct guesses
+- Streak multipliers (up to 3x for 25+ streaks)
+- Bonus points for difficult elements
 
 ### Achievements
-- **🔥 Hot Streak**: 5 consecutive correct guesses
-- **⚡ Lightning Round**: 10 consecutive correct guesses  
-- **🧪 Chemistry Master**: 25 consecutive correct guesses
-- **☢️ Nuclear Physicist**: Correctly guess all actinides
-- **💎 Precious Metals Expert**: Correctly guess all transition metals
+Unlock various achievements like:
+- 🎯 First Guess
+- 🔥 Hot Streak (5 consecutive)  
+- ⚡ Lightning Round (10 consecutive)
+- 🧪 Chemistry Master (25 consecutive)
+- 💎 Precious Metals Expert
+- 🛡️ Safety First
+- And many more!
 
-## Educational Value
+## Development
 
-While the game is humorous, it teaches real chemistry concepts:
+### Project Structure
+```
+/app                 # Next.js app directory
+/components          # React components
+/hooks              # Custom React hooks  
+/lib                # Utility functions and API clients
+/scripts            # Data management scripts
+/types.ts           # TypeScript type definitions
+```
 
-- **Elemental Properties**: Learn why certain elements are toxic or safe
-- **Chemical Reactivity**: Understand how elements interact with biological systems
-- **Atomic Structure**: Connect atomic number to chemical behavior
-- **Safety Awareness**: Real-world laboratory and handling safety
+### Key Components
+- `PeriodicTable`: Main periodic table grid layout
+- `ElementCard`: Individual element display cards  
+- `ElementModal`: Detailed element information popup
+- `LickGuessModal`: Game mode guessing interface
+- `GameStats`: Score tracking and achievement display
 
-## Deployment
-
-### Deploy to Vercel
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add your environment variables in Vercel dashboard
-4. Deploy!
-
-### Deploy to Netlify
-
-1. Push your code to GitHub
-2. Connect your repository to Netlify
-3. Add your environment variables in Netlify dashboard
-4. Set build command: `bun run build`
-5. Set publish directory: `.next`
-6. Deploy!
-
-### Environment Variables for Production
-
-Make sure to set these environment variables in your hosting platform:
-
-- `COSMIC_BUCKET_SLUG`
-- `COSMIC_READ_KEY`
-- `COSMIC_WRITE_KEY`
-
-## Contributing
-
-This project is designed to be both educational and entertaining. If you have ideas for:
-
-- New achievement types
-- Funny element descriptions
-- Additional game modes
-- UI improvements
-
-Feel free to contribute!
+### Scripts
+- `bun dev` - Start development server
+- `bun build` - Build for production
+- `bun type-check` - Run TypeScript checks
+- `bun update-lickability` - Update element safety data
 
 ## Safety Disclaimer
 
-⚠️ **Important**: This is an educational game for entertainment purposes only. DO NOT actually attempt to lick any chemical elements, especially metals, radioactive materials, or toxic substances. Always follow proper laboratory safety protocols when handling chemicals.
+⚠️ **Important**: This is an educational application for entertainment purposes only. DO NOT actually attempt to lick any chemical elements. Always follow proper laboratory safety protocols when handling chemicals.
 
-The "lickability" ratings are for educational and comedic purposes and should not be considered actual safety advice for chemical handling.
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`) 
+5. Open a Pull Request
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
----
+## Acknowledgments
 
-**Remember**: Just because the game says an element is "probably fine" to lick doesn't mean you should actually try it! Stay safe and enjoy learning chemistry through humor! 🧪😄
-
-<!-- README_END -->
+- Educational data sourced from various chemistry references
+- Built with [Cosmic CMS](https://cosmicjs.com) for content management
+- Styled with [Tailwind CSS](https://tailwindcss.com)
+- Powered by [Next.js](https://nextjs.org)
