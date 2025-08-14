@@ -1,3 +1,4 @@
+import React from 'react';
 import { PeriodicTableProps, Element } from '@/types';
 import { createElementLayout } from '@/lib/periodicTableLayout';
 import ElementCard from '@/components/ElementCard';
@@ -9,19 +10,19 @@ export default function PeriodicTable({
   searchTerm,
   gameMode = 'explore',
   guessedElements = new Set()
-}: PeriodicTableProps & { guessedElements?: Set<string> }) {
+}: PeriodicTableProps & { guessedElements?: Set<string> }): React.JSX.Element {
   const { mainTableElements, lanthanides, actinides } = createElementLayout(elements);
 
   // Safe handler that checks if onElementClick is defined
-  const handleElementClick = (element: Element) => {
+  const handleElementClick = (element: Element): void => {
     if (onElementClick) {
       onElementClick(element);
     }
   };
 
   // Render main periodic table (7 periods x 18 groups)
-  const renderMainTable = (): JSX.Element[] => {
-    const cells: JSX.Element[] = [];
+  const renderMainTable = (): React.JSX.Element[] => {
+    const cells: React.JSX.Element[] = [];
     
     for (let period = 1; period <= 7; period++) {
       for (let group = 1; group <= 18; group++) {
@@ -87,8 +88,8 @@ export default function PeriodicTable({
   };
 
   // Render lanthanides and actinides separately
-  const renderLanthanideActinide = (): JSX.Element[] => {
-    const cells: JSX.Element[] = [];
+  const renderLanthanideActinide = (): React.JSX.Element[] => {
+    const cells: React.JSX.Element[] = [];
     
     // Render lanthanides in first row
     lanthanides.forEach((element, index) => {
